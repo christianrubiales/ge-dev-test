@@ -27,6 +27,8 @@ import com.google.gson.stream.JsonReader;
  */
 public class QueryProcessorImpl implements QueryProcessor {
 	
+	private static final String FILENAME_FORMAT = "yyyyMMdd-HHmmssSSS";
+
 	/**
 	 * This is the URL prepended to the location being queried to form the proper API call.
 	 */
@@ -63,7 +65,7 @@ public class QueryProcessorImpl implements QueryProcessor {
 		this.endpointBaseUrl = endpointBaseUrl;
 		this.csvBaseDirectory = csvBaseDirectory;
 		this.jsonEncoding = jsonEncoding;
-		this.format = FastDateFormat.getInstance("yyyyMMdd-HHmmssSSS");
+		this.format = FastDateFormat.getInstance(FILENAME_FORMAT);
 	}
 
 	/**
@@ -136,13 +138,13 @@ public class QueryProcessorImpl implements QueryProcessor {
 	 * @param non-flat JSON representation of a location.
 	 * @return an {@code Object} array as a flat representation of the given {@code LocationJson} object.
 	 */
-	private Object[] flatten(LocationJson json) {
+	protected Object[] flatten(LocationJson json) {
 		return new Object[] {
 				json.get_id(), 
 				json.getName(), 
 				json.getType(), 
 				json.getGeoPosition().getLatitude(), 
-				json.getGeoPosition().getLatitude()
+				json.getGeoPosition().getLongitude()
 			};
 	}
 	
