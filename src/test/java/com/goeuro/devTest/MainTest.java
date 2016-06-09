@@ -11,18 +11,18 @@ import org.junit.Test;
  */
 public class MainTest {
 
-	@Test(expected=NullPointerException.class)
-	public void testMain_nullArgument_shouldThrowNullPointerException() throws IOException, QueryProcessorException {
+	@Test
+	public void testMain_nullArgument_shouldShowUsageMessage() throws IOException, QueryProcessorException {
 		Main.main(null);
 	}
 	
-	@Test(expected=IllegalArgumentException.class)
-	public void testMain_containsNullArgument_shouldThrowIllegalArgumentException() throws IOException, QueryProcessorException {
+	@Test
+	public void testMain_containsNullArgument_shouldShowUsageMessage() throws IOException, QueryProcessorException {
 		Main.main(new String[] {"not null", null});
 	}
 
-	@Test(expected=IllegalArgumentException.class)
-	public void testMain_emptyArgument_shouldThrowIllegalArgumentException() throws IOException, QueryProcessorException {
+	@Test
+	public void testMain_emptyArgument_shouldShowUsageMessage() throws IOException, QueryProcessorException {
 		Main.main(new String[] {});
 	}
 

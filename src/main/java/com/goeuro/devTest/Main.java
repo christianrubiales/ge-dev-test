@@ -46,7 +46,9 @@ public class Main {
 		String location = null;
 		try {
 			location = getLocationFromArguments(args);
-		} catch (NullPointerException | IllegalArgumentException e) {
+		} catch (NullPointerException e) {
+			System.out.println(USAGE_MESSAGE);
+		} catch (IllegalArgumentException e) {
 			System.out.println(USAGE_MESSAGE);
 		}
 		
