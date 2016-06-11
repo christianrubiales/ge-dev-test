@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Date;
 
 import org.apache.commons.csv.CSVFormat;
@@ -27,6 +28,9 @@ import com.google.gson.stream.JsonReader;
  */
 public class QueryProcessorImpl implements QueryProcessor {
 	
+	/**
+	 * Format for the resulting CSV files.
+	 */
 	private static final String FILENAME_FORMAT = "yyyyMMdd-HHmmssSSS";
 
 	/**
@@ -44,6 +48,9 @@ public class QueryProcessorImpl implements QueryProcessor {
 	 */
 	private final String jsonEncoding;
 	
+	/**
+	 * Used to format the name of the resulting CSV files.
+	 */
 	private final FastDateFormat format;
 	
 	/**
@@ -73,8 +80,8 @@ public class QueryProcessorImpl implements QueryProcessor {
 	 * The name of the CSV will be in timestamp format.
 	 * @see com.goeuro.devTest.QueryProcessor#process(java.lang.String)
 	 */
-	@Override
-	public void process(String location) throws QueryProcessorException {
+	public File process(String location) throws QueryProcessorException {
+		File file = null;
 		Validate.notBlank(location);
 
 		InputStream inputStream = null;
@@ -93,7 +100,8 @@ public class QueryProcessorImpl implements QueryProcessor {
 	        
 			this.createDirectoryIfNotExisting(this.csvBaseDirectory);
 			String filename = format.format(new Date()) + ".csv";
-			File file = new File(this.csvBaseDirectory, filename);
+			file = new File(this.csvBaseDirectory, filename);
+			this.createFile(file);
 			
 			while (reader.hasNext()) {
 	            // Read data into object model
@@ -111,6 +119,8 @@ public class QueryProcessorImpl implements QueryProcessor {
 			IOUtils.closeQuietly(inputStreamReader);
 			IOUtils.closeQuietly(inputStream);
 		}
+		
+		return file;
 	}
 
 	/**
@@ -121,7 +131,9 @@ public class QueryProcessorImpl implements QueryProcessor {
 	 */
 	protected InputStream getUrlInputStream(String location) throws MalformedURLException, IOException {
 		InputStream inputStream;
-		URL url = new URL(this.endpointBaseUrl + location);
+		String encoded = this.endpointBaseUrl 
+				+ URLEncoder.encode(location, jsonEncoding).replace("+", "%20");
+		URL url = new URL(encoded);
 		inputStream = url.openStream();
 		
 		return inputStream;
@@ -157,6 +169,14 @@ public class QueryProcessorImpl implements QueryProcessor {
 		if (!file.exists()) {
 			file.mkdir();
 		}
+	}
+	
+	/**
+	 * @param file the file to create
+	 * @throws IOException
+	 */
+	protected void createFile(File file) throws IOException {
+		file.createNewFile();
 	}
 
 }

@@ -34,7 +34,7 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>GoEuroTest</finalName>
+		<!-- finalName>GoEuroTest</finalName-->
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -71,6 +71,7 @@
 								</transformer>
 							</transformers>
 							<outputDirectory>./</outputDirectory>
+							<finalName>GoEuroTest</finalName>
 						</configuration>
 					</execution>
 				</executions>

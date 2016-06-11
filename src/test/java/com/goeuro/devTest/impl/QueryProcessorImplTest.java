@@ -95,6 +95,8 @@ public class QueryProcessorImplTest {
 			}
 			protected void writeCsv(File file, String csv, String encoding, boolean append) throws IOException {
 			}
+			protected void createFile(File file) throws IOException {
+			}
 		};
 		processor.process("location");
 	}
@@ -122,12 +124,12 @@ public class QueryProcessorImplTest {
 	// others
 
 	@Test(expected=NullPointerException.class)
-	public void testFlatten_null_muustThrowNullPointerException() {
+	public void testFlatten_null_mustThrowNullPointerException() {
 		processor.flatten(null);
 	}
 
 	@Test(expected=NullPointerException.class)
-	public void testFlatten_nullGeoPosition_muustThrowNullPointerException() {
+	public void testFlatten_nullGeoPosition_mustThrowNullPointerException() {
 		LocationJson json = new LocationJson();
 		json.set_id(1);
 		json.setName("name");
@@ -174,6 +176,17 @@ public class QueryProcessorImplTest {
 		
 		processor.createDirectoryIfNotExisting(name);
 		File file = new File(name);
+		
+		assertTrue(file.exists());
+		file.delete();
+	}
+
+	@Test
+	public void testCreateFile_mustBeCreated() throws IOException {
+		String name = Integer.toString(new Random().nextInt(Integer.MAX_VALUE));
+		File file = new File(name);
+		
+		processor.createFile(file);
 		
 		assertTrue(file.exists());
 		file.delete();

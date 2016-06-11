@@ -1,5 +1,6 @@
 package com.goeuro.devTest;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -62,7 +63,8 @@ public class Main {
 			String baseCsvDirectory = properties.getProperty(PROPERTY_BASE_CSV_DIRECTORY);
 			String jsonEncoding = properties.getProperty(PROPERTY_JSON_ENCODING);
 			QueryProcessor processor = new QueryProcessorImpl(baseUrl, baseCsvDirectory, jsonEncoding);
-			processor.process(location);
+			File file = processor.process(location);
+			System.out.println("Results saved in \"" + file.getAbsolutePath() + "\"");
 		}
 	}
 	
